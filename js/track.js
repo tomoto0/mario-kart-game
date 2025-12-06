@@ -681,6 +681,7 @@ class Track {
             { x: 230, z: 120, patrolAxis: 'z', patrolRange: 25 },    // 東側カーブ
             { x: -100, z: -180, patrolAxis: 'x', patrolRange: 20 },  // 最終コーナー
             { x: -180, z: 180, patrolAxis: 'z', patrolRange: 30 },   // 北西側（スタートから遠い）
+            { x: -40, z: 200, patrolAxis: 'x', patrolRange: 25 },    // 北側S字カーブ中央
         ];
         
         koopaLocations.forEach((loc, index) => {

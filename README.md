@@ -2,6 +2,9 @@
 
 A professional Mario Kart-style racing game built with Three.js!
 
+## Overview
+Super Kart Racing 3D is a web-based racing game inspired by Mario Kart. It features AI opponents, a dynamic power-up system, and a tropical-themed track. The game is built entirely with JavaScript and Three.js, ensuring smooth performance and engaging gameplay.
+
 ## 🎮 How to Play
 
 ### Controls
@@ -116,7 +119,6 @@ mario_kart/
 python3 -m http.server 8080
 
 http://localhost:8080
-
 ```
 
 ## 🎯 Tips for Winning

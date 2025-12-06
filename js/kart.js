@@ -15,8 +15,10 @@ class Kart {
         this.angularVelocity = 0;
         
         // 改善された移動ステータス - アーケードスタイル
-        this.maxSpeed = 100;          // 最高速度
-        this.acceleration = 65;       // 加速力（大幅アップ）
+        // AIカートは1.2倍の速度
+        const speedMultiplier = isPlayer ? 1.0 : 1.2;
+        this.maxSpeed = 100 * speedMultiplier;          // 最高速度
+        this.acceleration = 65 * speedMultiplier;       // 加速力（大幅アップ）
         this.deceleration = 12;       // 自然減速（緩やか）
         this.brakeStrength = 80;      // ブレーキ強化
         this.turnSpeed = 3.5;         // 旋回速度アップ

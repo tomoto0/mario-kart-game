@@ -811,14 +811,14 @@ class ItemManager {
                     }
                     
                     if (hazard.type === 'banana') {
-                        console.log('バナナヒット:', kart.isPlayer ? 'プレイヤー' : 'AI', kart === hazard.owner ? '(自分のバナナ)' : '');
+                        console.log('バナナヒット:', kart.isPlayer ? 'プレーヤー' : 'AI', kart === hazard.owner ? '(自分のバナナ)' : '');
                         kart.spinOut();
                         hazard.active = false;
                     } else if (hazard.type === 'oil') {
-                        console.log('オイルヒット:', kart.isPlayer ? 'プレイヤー' : 'AI', kart === hazard.owner ? '(自分のオイル)' : '');
+                        console.log('オイルヒット:', kart.isPlayer ? 'プレーヤー' : 'AI', kart === hazard.owner ? '(自分のオイル)' : '');
                         // スピンアウト（自分のオイルでも同様）
                         kart.spinOut();
-                        // オイルは踏んでも消えない（複数回使える）
+                        hazard.active = false;  // オイルも踏んだら消える
                     } else if (hazard.type === 'dropped_shell') {
                         console.log('落ちた甲羅ヒット:', kart.isPlayer ? 'プレイヤー' : 'AI');
                         kart.spinOut();
