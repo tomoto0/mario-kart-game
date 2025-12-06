@@ -19,9 +19,6 @@ class ItemManager {
             case 'rocket_boost':
                 this.useRocketBoost(kart);
                 break;
-            case 'triple_boost':
-                this.useTripleBoost(kart);
-                break;
             case 'homing_missile':
                 this.fireHomingMissile(kart);
                 break;
@@ -60,26 +57,6 @@ class ItemManager {
         kart.applyBoost(1.2, 1.25);  // 1.4倍 -> 1.25倍、時間も短縮
         if (window.audioManager) {
             window.audioManager.playSound('boost_big');
-        }
-    }
-    
-    useTripleBoost(kart) {
-        kart.tripleBoostCharges = 3;
-        this.applyTripleBoostCharge(kart);
-    }
-    
-    applyTripleBoostCharge(kart) {
-        if (kart.tripleBoostCharges > 0) {
-            kart.tripleBoostCharges--;
-            kart.applyBoost(0.6, 1.25);  // 控えめに調整
-            if (window.audioManager) {
-                window.audioManager.playSound('boost');
-            }
-            
-            // Auto-use remaining charges
-            if (kart.tripleBoostCharges > 0) {
-                setTimeout(() => this.applyTripleBoostCharge(kart), 1000);
-            }
         }
     }
     

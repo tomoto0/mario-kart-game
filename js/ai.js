@@ -451,7 +451,6 @@ class AIController {
         
         switch (item.id) {
             case 'rocket_boost':
-            case 'triple_boost':
                 // Use on straights
                 shouldUse = this.isOnStraight();
                 break;

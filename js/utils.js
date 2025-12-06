@@ -212,13 +212,6 @@ const ItemTypes = {
         description: 'Massive speed boost',
         rarity: { '1-3': 0.05, '4-5': 0.15, '6-8': 0.25 }
     },
-    TRIPLE_BOOST: {
-        id: 'triple_boost',
-        name: 'Triple Boost',
-        emoji: '⚡',
-        description: 'Three small boosts',
-        rarity: { '1-3': 0.1, '4-5': 0.2, '6-8': 0.15 }
-    },
     HOMING_MISSILE: {
         id: 'homing_missile',
         name: 'Homing Missile',

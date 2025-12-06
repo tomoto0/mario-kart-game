@@ -38,13 +38,12 @@ Super Kart Racing 3D is a web-based racing game inspired by Mario Kart. It featu
 - Grass slowdown areas
 - Item boxes throughout the track
 
-### Power-Up System (10 Items)
+### Power-Up System (9 Items)
 Position-based item distribution:
 
 | Item | Effect |
 |------|--------|
 | 🚀 Rocket Boost | Massive speed boost |
-| ⚡ Triple Boost | Three consecutive small boosts |
 | 🎯 Homing Missile | Targets racer ahead |
 | 🔴 Straight Missile | Fires straight ahead |
 | 🍌 Banana | Drop behind to spin out others |
