@@ -65,7 +65,7 @@ class Kart {
         this.invincibilityTimer = 0;
         
         // Race state
-        this.lap = 0;
+        this.lap = 1;
         this.checkpoint = 0;
         this.lastCheckpoint = -1;
         this.racePosition = 1;
@@ -1074,7 +1074,8 @@ class Kart {
             // X座標が負から正に変わった = 東向きに通過
             if (this.lastX !== undefined && this.lastX < 0 && this.position.x >= 0) {
                 // チェックポイントを十分通過しているか確認（ショートカット防止）
-                if (this.lastCheckpoint >= numCheckpoints - 3 || this.lastCheckpoint <= 1) {
+                // lastCheckpoint が -1（スタート直後）の場合はカウントしない
+                if (this.lastCheckpoint >= numCheckpoints - 3 && this.lastCheckpoint !== -1) {
                     this.lap++;
                     this.lastCheckpoint = 0;
                     
@@ -1094,7 +1095,7 @@ class Kart {
         }
         
         this.checkpoint = newCheckpoint;
-        this.totalProgress = this.lap + trackProgress;
+        this.totalProgress = (this.lap - 1) + trackProgress;  // lap は 1 始まりなので -1 して計算
     }
     
     handleSpinOut(deltaTime) {

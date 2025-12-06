@@ -257,7 +257,7 @@ class Game {
         this.karts.forEach((kart, index) => {
             const pos = startPositions[index];
             kart.setPosition(pos.x, pos.y, pos.z, pos.rotation);
-            kart.lap = 0;
+            kart.lap = 1;
             kart.checkpoint = 0;
             kart.lastCheckpoint = -1;
             kart.finished = false;
@@ -505,7 +505,7 @@ class Game {
             if (kart.finished) return;
             
             // Check if crossed finish line (lap 3 completed)
-            if (kart.lap >= this.totalLaps) {
+            if (kart.lap > this.totalLaps) {
                 kart.finished = true;
                 kart.finishTime = this.raceTime;
                 
@@ -517,7 +517,7 @@ class Game {
             }
             
             // Final lap notification
-            if (kart.isPlayer && kart.lap === this.totalLaps - 1 && !kart.finalLapShown) {
+            if (kart.isPlayer && kart.lap === this.totalLaps && !kart.finalLapShown) {
                 kart.finalLapShown = true;
                 this.uiManager.showFinalLap();
             }
@@ -647,7 +647,7 @@ class Game {
             const kart = this.playerKart;
             
             this.uiManager.updatePosition(kart.racePosition);
-            this.uiManager.updateLap(Math.min(kart.lap + 1, this.totalLaps), this.totalLaps);
+            this.uiManager.updateLap(Math.min(kart.lap, this.totalLaps), this.totalLaps);
             this.uiManager.updateTimer(this.raceTime);
             this.uiManager.updateItem(kart.currentItem);
             this.uiManager.updateSpeed(kart.speed, kart.maxSpeed);
