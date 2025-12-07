@@ -933,44 +933,43 @@ class Kart {
         }
         
         // フェンス（カーブのショートカット防止）との衝突判定
-        const fenceLines = [
-            // 第1コーナー内側
-            [{x: 160, z: -160}, {x: 190, z: -120}, {x: 200, z: -60}],
-            // 第2コーナー内側
-            [{x: 170, z: 120}, {x: 130, z: 150}, {x: 80, z: 160}],
-            // S字カーブ内側
-            [{x: 40, z: 140}, {x: -20, z: 170}, {x: -80, z: 190}],
-            // 第3コーナー内側
-            [{x: -170, z: 170}, {x: -190, z: 120}, {x: -190, z: 60}],
-            // 最終コーナー内側
-            [{x: -150, z: -100}, {x: -120, z: -140}, {x: -80, z: -165}],
-        ];
-        
-        const fenceRadius = 5;
-        fenceLines.forEach(points => {
-            for (let i = 0; i < points.length - 1; i++) {
-                const p1 = points[i];
-                const p2 = points[i + 1];
-                
-                // 線分とカートの距離を計算
-                const dist = this.pointToLineDistance(
-                    this.position.x, this.position.z,
-                    p1.x, p1.z, p2.x, p2.z
-                );
-                
-                if (dist < fenceRadius) {
-                    // フェンスに衝突 - 押し戻す
-                    const midX = (p1.x + p2.x) / 2;
-                    const midZ = (p1.z + p2.z) / 2;
-                    const pushDirection = {
-                        x: this.position.x - midX,
-                        z: this.position.z - midZ
-                    };
+        // track.jsで定義されたfenceCollidersを使用
+        if (track.fenceColliders && track.fenceColliders.length > 0) {
+            const fenceRadius = 4;
+            track.fenceColliders.forEach(fence => {
+                const points = fence.points;
+                for (let i = 0; i < points.length - 1; i++) {
+                    const p1 = points[i];
+                    const p2 = points[i + 1];
                     
-                    const len = Math.sqrt(pushDirection.x * pushDirection.x + pushDirection.z * pushDirection.z);
-                    if (len > 0.01) {
-                        pushDirection.x /= len;
-                        pushDirection.z /= len;
+                    // 線分とカートの距離を計算
+                    const dist = this.pointToLineDistance(
+                        this.position.x, this.position.z,
+                        p1.x, p1.z, p2.x, p2.z
+                    );
+                    
+                    if (dist < fenceRadius) {
+                        // フェンスに衝突 - 押し戻す
+                        // 線分に対して垂直方向に押し戻す
+                        const dx = p2.x - p1.x;
+                        const dz = p2.z - p1.z;
+                        const len = Math.sqrt(dx * dx + dz * dz);
+                        
+                        // 法線ベクトル（線分に垂直）
+                        const nx = -dz / len;
+                        const nz = dx / len;
+                        
+                        // カートが法線のどちら側にいるか判定
+                        const midX = (p1.x + p2.x) / 2;
+                        const midZ = (p1.z + p2.z) / 2;
+                        const toKartX = this.position.x - midX;
+                        const toKartZ = this.position.z - midZ;
+                        const side = toKartX * nx + toKartZ * nz;
+                        
+                        const pushDirection = {
+                            x: side > 0 ? nx : -nx,
+                            z: side > 0 ? nz : -nz
+                        };
                         
                         const pushDist = fenceRadius - dist + 1;
                         this.position.x += pushDirection.x * pushDist;
@@ -979,8 +978,8 @@ class Kart {
                         this.speed *= 0.5;
                     }
                 }
-            }
-        });
+            });
+        }
     }
     
     // 点と線分の距離を計算
