@@ -1073,11 +1073,13 @@ class Kart {
         if (nearFinishLine && !this.wrongWay) {
             // X座標が負から正に変わった = 東向きに通過
             if (this.lastX !== undefined && this.lastX < 0 && this.position.x >= 0) {
-                // チェックポイントを十分通過しているか確認（ショートカット防止）
+                // チェックポイントを半分以上通過しているか確認（ショートカット防止）
                 // lastCheckpoint が -1（スタート直後）の場合はカウントしない
-                if (this.lastCheckpoint >= numCheckpoints - 3 && this.lastCheckpoint !== -1) {
+                const halfCheckpoints = Math.floor(numCheckpoints / 2);
+                if (this.lastCheckpoint >= halfCheckpoints && this.lastCheckpoint !== -1) {
                     this.lap++;
                     this.lastCheckpoint = 0;
+                    console.log('Lap completed! Now on lap:', this.lap, 'Player:', this.isPlayer);
                     
                     if (window.audioManager) {
                         window.audioManager.playSound('lap_complete');
@@ -1088,10 +1090,17 @@ class Kart {
         
         this.lastX = this.position.x;
         
-        // Update last checkpoint (prevent going backwards)
-        if (newCheckpoint > this.lastCheckpoint || 
-            (this.lastCheckpoint > numCheckpoints - 2 && newCheckpoint <= 1)) {
-            this.lastCheckpoint = newCheckpoint;
+        // Update last checkpoint (prevent going backwards, but allow wrapping around)
+        if (newCheckpoint !== this.lastCheckpoint) {
+            // 順方向に進んでいる場合、または周回の境界を越えた場合に更新
+            const forwardProgress = (newCheckpoint > this.lastCheckpoint) ||
+                (this.lastCheckpoint >= numCheckpoints - 2 && newCheckpoint <= 1);
+            const notGoingBackwardsTooMuch = Math.abs(newCheckpoint - this.lastCheckpoint) < numCheckpoints / 2 ||
+                forwardProgress;
+            
+            if (forwardProgress || (this.lastCheckpoint === -1)) {
+                this.lastCheckpoint = newCheckpoint;
+            }
         }
         
         this.checkpoint = newCheckpoint;
